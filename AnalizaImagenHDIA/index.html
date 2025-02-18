@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analiza imagenes</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <h2>Imagenes</h2>
+
+    <textarea id="prompt" rows="4" cols="50" placeholder="Introduce la url de la imagen">Que hay en la imagen</textarea>
+    <input type="file" id="image" accept="image/*">
+    <button id="btn" class="btn btn-primary" onclick="send()">Analizar</button>
+
+    <div class="response" id="response">
+
+    </div>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>
