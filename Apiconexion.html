@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Sender</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9f7ef;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Enviar Prompt a IA</h1>
+        
+        <form id="promptForm">
+            <div class="form-group">
+                <label for="model">Modelo de IA:</label>
+                <select id="model" required>
+                    <option value="">Seleccione un modelo...</option>
+                    <option value="deepseek-r1-14b">DeepSeek-R1-14B</option>
+                    <option value="deepseek-r1-8b">DeepSeek-R1-8B</option>
+                    <!-- Añade más modelos si es necesario -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="prompt">Prompt para IA:</label>
+                <textarea id="prompt" rows="4" required></textarea>
+            </div>
+
+            <button type="submit">Enviar Prompt</button>
+        </form>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('promptForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const model = document.getElementById('model').value;
+            const promptText = document.getElementById('prompt').value;
+
+            if (!model || !promptText) {
+                alert('Por favor, complete todos los campos');
+                return;
+            }
+
+            const requestBody = {
+                model: model,
+                Prompt: promptText
+            };
+
+            fetch('https://localhost:7034/Ollama/RequestOllama', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerHTML = `<strong>Respuesta:</strong> ${data.result}`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = 'Ocurrió un error al enviar el prompt. Por favor, inténtelo nuevamente.';
+            });
+        });
+    </script>
+</body>
+</html>
